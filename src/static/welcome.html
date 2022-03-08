@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<title>Login</title>
+  </head>
+  <body>
+    <h1>Hola ${username}</h1>
+    <p>En <span id="t">n</span> segundos se eliminara la session si no hay actividad</p>
+    <form action="/logout">
+      <button>Cerrar session</button>
+    </form>
+  </body>
+
+  <script>
+
+      
+
+      const t = document.querySelector("#t")
+      const inicial = 10
+      let tiempo = inicial
+
+      let idContador = setInterval(() => {
+        t.textContent = tiempo--
+        if (tiempo == 0) {
+          clearInterval(idContador)
+          document.cookie = ""
+         
+          fetch("/logout")
+            .then(res => {
+              if (res.status == 200) {
+                
+                alert("Se elimino session por inactividad")
+                document.location.reload(true)
+                
+              }
+            })
+          
+          
+        }
+      }, 1000)
+
+
+      document.onmousemove = () => {
+        tiempo = inicial
+      }
+
+      document.onkeypress = () => {
+        tiempo = inicial
+      }
+
+  </script>
+</html>
